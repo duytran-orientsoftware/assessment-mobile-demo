@@ -1,0 +1,37 @@
+fastlane_require 'dotenv'
+
+### COMMON
+before_all do |lane, options|
+  # Get build number
+  incremented_build_number = Time.now.to_i.to_s
+  ENV['BUILD_NUMBER'] = incremented_build_number
+
+  # Get app version
+  package = load_json(json_path: "./package.json")
+  version = package["version"]
+  ENV['APP_VERSION'] = version
+
+  # Log to terminal
+  puts "Current version " + version
+  puts "Current build number " + incremented_build_number
+
+  Dotenv.load(".env")
+end
+
+platform :android do
+  lane :build_apk do
+    gradle(
+      task: 'assemble',
+      build_type: 'Release',
+      project_dir: './android',
+      properties: {
+        "android.injected.version.code" => ENV['BUILD_NUMBER'],
+        "android.injected.version.name" => ENV['APP_VERSION'],
+      }
+    )
+  end
+
+  lane :deploy do |options|
+    build_apk
+  end
+end
