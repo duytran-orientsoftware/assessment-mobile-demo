@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from 'react'
 import { StyleSheet, View, SafeAreaView, FlatList } from 'react-native'
 
+import Space from '@components/space'
 import { userDataGenerator } from '@helpers/generator.helper'
 
 import ListCard from './components/listCard'
 
-const LIMIT = 30
+const LIMIT = 50
 const LIMIT_LOAD_MORE = 50
 const ITEM_HEIGHT = 130
 
@@ -25,7 +26,7 @@ const HomeScreen: React.FC = () => {
   }, [])
 
   const renderSeparate = useCallback(() => {
-    return <View style={styles.separate} />
+    return <Space height={16} />
   }, [])
 
   return (
@@ -34,10 +35,13 @@ const HomeScreen: React.FC = () => {
         <FlatList
           data={data}
           extraData={data}
-          keyExtractor={(item, index) => `${item.name}_${index}`}
+          keyExtractor={(item: { name: string }, index) =>
+            `${item.name}_${index}`
+          }
           renderItem={renderItem}
           ItemSeparatorComponent={renderSeparate}
           onEndReached={onEndReached}
+          onEndReachedThreshold={0.7}
           contentContainerStyle={styles.contentContainerStyle}
           getItemLayout={(data, index) => ({
             length: ITEM_HEIGHT,
@@ -60,10 +64,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainerStyle: {
-    paddingTop: 12,
+    paddingTop: 24,
     paddingHorizontal: 24,
-  },
-  separate: {
-    height: 8,
   },
 })

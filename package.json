@@ -29,6 +29,7 @@
     "react-native": "0.68.1",
     "react-native-app-auth": "^6.4.3",
     "react-native-config": "^1.4.5",
+    "react-native-fast-image": "^8.5.11",
     "react-native-flipper": "^0.145.0",
     "react-native-gesture-handler": "^2.4.2",
     "react-native-radio-buttons-group": "^2.2.11",
